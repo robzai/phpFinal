@@ -2,6 +2,7 @@
 ob_start();
 require_once('db.php');
 require_once('mailer.php');
+require_once('startSession.php');
 
 $userName = "0";
 $password = "0";
@@ -19,10 +20,10 @@ if( !invalidUsername($userName) && !invalidPasswprd($password)){
 	//insert into database
 	$query = " INSERT INTO $usersTable values(null,$password ,$userName)";
 	mysqli_query($db, $query) or die(mysqli_error($db));
-	//startSession($userName);
+	startSession($userName);
 	sendEmail($userName, $password);
-	
-	echo "successfully signed up";
+	header("Location: membersonly1.php");
+	//echo "successfully signed up";
 }
 
 function sendEmail($userName, $password){
@@ -63,7 +64,7 @@ function checkUserNameExist ($userName){
 
 
 function invalidUsername($userName){
-	if(checkUserNameExist($userName)){
+	if(checkUserNameExist($userName) || $userName == "0";){
 		echo "username exist";
 		echo "<br>";
 		return true;
@@ -78,13 +79,6 @@ function invalidPasswprd($password){
 		return true;
 	}
 	return false;
-}
-
-
-function startSession($userName){
-	session_start();
-	$_SESSION['authenticated'] = 1;
-	$_SESSION['userName'] = $userName;
 }
 
 ob_end_flush();
