@@ -1,0 +1,35 @@
+<HTML>
+<HEAD>
+	<script src="/wp-includes/js/addInput.js" language="Javascript" type="text/javascript"></script>
+	
+	<script>
+	/*
+	 * http://www.randomsnippets.com/2008/02/21/how-to-dynamically-add-form-elements-via-javascript/	
+	*/
+		var counter = 1;
+		var limit = 3;
+		function addInput(divName){
+			 if (counter == limit)  {
+				  alert("You have reached the limit of adding " + counter + " inputs");
+			 }
+			 else {
+				  var newdiv = document.createElement('div');
+				  newdiv.innerHTML = "email address " + (counter + 1) + "<input type='email' name='emails[]'>";
+				  document.getElementById(divName).appendChild(newdiv);
+				  counter++;
+			 }
+		}
+	</script>
+</HEAD>
+<BODY>
+	<form action="signUp.php" method="post">
+		 user Name:<input type="text" name="u"><br>
+		 password:<input type="text" name="p"><br>
+		 <div id="dynamicInput">
+			  email address 1<input type="email" name="emails[]">
+		 </div>
+		 <input type="button" value="Add another email" onClick="addInput('dynamicInput');">
+		 <input type="submit" value="signup">
+	</form>
+</BODY>
+</HTML>
