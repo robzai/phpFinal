@@ -1,10 +1,10 @@
 <?php
 ob_start();
 require_once('db.php');
+require_once('mailer.php');
 
 $userName = "0";
 $password = "0";
-
 $usersTable = "users";
 
 if(isset($_POST["u"]) && !empty($_POST["u"])){
@@ -12,25 +12,31 @@ if(isset($_POST["u"]) && !empty($_POST["u"])){
 }
 if(isset($_POST["p"]) && !empty($_POST["p"])){
 	$password = $_POST["p"];
-}
-if(isset($_POST["emails"]) && !empty($_POST["emails"])){
-	$emails = $_POST["emails"];
-	foreach ($emails as $email) {
-		
-		 echo $email . "<br>";
-	}
-}
-	
+}	
 
 //if username and password are valid, insert them in database
 if( !invalidUsername($userName) && !invalidPasswprd($password)){
 	//insert into database
-	//$query = " INSERT INTO $usersTable values(null, $userName, $password)";
-	//mysqli_query($db, $query) or die(mysqli_error($db));
+	$query = " INSERT INTO $usersTable values(null,$password ,$userName)";
+	mysqli_query($db, $query) or die(mysqli_error($db));
 	//startSession($userName);
-	
+	sendEmail($userName, $password);
 	
 	echo "successfully signed up";
+}
+
+function sendEmail($userName, $password){
+	if(isset($_POST["emails"]) && !empty($_POST["emails"])){
+		$emails = $_POST["emails"];
+		foreach ($emails as $email) {		
+			echo $email . "<br>";
+			 
+			$title = "from php final";
+			$body =  "your team's username: $userName password: $password";
+			startphpmailer ($email, $body, $title);		 				 
+
+		}
+	}
 }
 
 
