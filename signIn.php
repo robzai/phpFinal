@@ -17,7 +17,7 @@ if(isset($_POST["p"]) && !empty($_POST["p"])){
 if(checkUser($userName, $password)){
 	startSession($userName);
 	//var_dump($_SESSION);		
-	header("Location: membersonly1.php");
+	header("Location: membersonly2.php");
 } 
 
 

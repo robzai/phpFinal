@@ -22,7 +22,7 @@ if( !invalidUsername($userName) && !invalidPasswprd($password)){
 	mysqli_query($db, $query) or die(mysqli_error($db));
 	startSession($userName);
 	sendEmail($userName, $password);
-	header("Location: membersonly1.php");
+	header("Location: membersonly2.php");
 	//echo "successfully signed up";
 }
 
@@ -62,7 +62,7 @@ function checkUserNameExist ($userName){
 
 
 function invalidUsername($userName){
-	if(checkUserNameExist($userName) || $userName == "0";){
+	if(checkUserNameExist($userName) || $userName == "0"){
 		echo "username exist";
 		echo "<br>";
 		return true;

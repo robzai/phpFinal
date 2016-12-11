@@ -15,12 +15,12 @@ if ( isset( $_POST['submit'] ) ){
 	
 	//upload comment to database
 	$commentId = writeCommentToDB($userId, $comment, $date);
-	
+	//if there is a file to upload
 	if(!empty($_FILES["fileToUpload"]["name"])){
 		$target_dir = "uploads/";
 		//$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 		//$fileType = pathinfo($target_file,PATHINFO_EXTENSION);
-		$fullPath = $target_dir.$_FILES["fileToUpload"]["name"];
+		$fullPath = $target_dir.$_SESSION['userName']."_".$_FILES["fileToUpload"]["name"];
 		//if uploadFile is successful up date the database
 		if(uploadFile($fullPath)){
 			writePathToDB($userId, $fullPath, $commentId);
@@ -99,7 +99,7 @@ ob_end_flush();
 			}
 
 					
-			function showrecord($userName, $date, $contents){
+			function showComment($userName, $date, $contents){
 				echo "<div id='divActivites' name='divActivites' style='border:1px solid black'>
 						<div>
 							<span>$userName</span>
@@ -109,9 +109,22 @@ ob_end_flush();
 							<textarea readonly autofocus='true' onfocus='textAreaAdjust(this)'
 								id='inActivities' name='inActivities' 
 								style='border:1px solid black; resize: none; overflow:visible'>$contents</textarea>
-							<span>file</span>
-						</span>
-					  </div>"; 
+					 "; 
+			}
+			
+			function showFile($path){
+				if($path == null){
+					echo "
+						       </span>
+					       </div>
+					     ";
+				}else{
+					echo "          <span><a href='$path' download>file</a></span>
+						       </span>
+					       </div>
+					     ";
+				}
+
 			}
 
 			function getComments($userName){
@@ -121,9 +134,7 @@ ob_end_flush();
 				global $commentsTable;
 				global $filesTable;
 				//get userId for other select or insert to use	
-				$selectQuery="
-								select userId from $usersTable where userName = $userName
-							 ";
+				$selectQuery="select userId from $usersTable where userName = '" . $userName ."'";
 				$resultSet = mysqli_query($db, $selectQuery) or die(mysqli_error($db));
 				$row = mysqli_fetch_assoc($resultSet);
 				$userId = $row["userId"];
@@ -143,7 +154,8 @@ ob_end_flush();
 					
 					$contents = $row["comment"];
 					$date = $row["date"];		
-					showrecord($userName, $date, $contents);
+					showComment($userName, $date, $contents);
+					showFile($row["path"]);
 					/*
 					foreach($row as $key=>$col){
 						echo "$key-$col ";
