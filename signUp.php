@@ -17,7 +17,8 @@ if(isset($_POST["p"]) && !empty($_POST["p"])){
 //if username and password are valid, insert them in database
 if( !invalidUsername($userName) && !invalidPasswprd($password)){
 	//insert into database
-	$query = " INSERT INTO $usersTable values(null,$password ,$userName)";
+	$query = " INSERT INTO $usersTable values(null, '" . $password ."', '" . $userName . "')";
+	//var_dump($query);
 	mysqli_query($db, $query) or die(mysqli_error($db));
 	startSession($userName);
 	sendEmail($userName, $password);

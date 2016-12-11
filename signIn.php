@@ -39,8 +39,5 @@ function checkUser($userName, $password){
 	return false;
 }
 
-
-
-
 ob_end_flush();	
 ?>

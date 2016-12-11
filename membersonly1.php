@@ -25,7 +25,7 @@ function showrecord($userName, $date, $contents){
 			<span>$date</span>
 		</div>
 		<span>
-			<textarea id='inActivities' name='inActivities' style='border:1px solid black'>$contents</textarea>
+			<textarea readonly id='inActivities' name='inActivities' style='border:1px solid black; resize: none'>$contents</textarea>
 			<span>file</span>
 		</span>
 	</div>"; 
