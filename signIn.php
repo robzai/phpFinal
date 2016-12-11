@@ -3,7 +3,6 @@ ob_start();
 require_once('db.php');
 require_once('startSession.php');
 
-$usersTable = "users";
 
 //read username and password from input
 $userName;
@@ -32,12 +31,11 @@ function checkUser($userName, $password){
 				 ";
 	$resultSet = mysqli_query($db, $selectQuery) or die(mysqli_error($db));
 	$row = mysqli_fetch_assoc($resultSet);
-	foreach($row as $key=>$col){
-		if($password == $col){
-			return true;
-		}
-		//echo "$col";
+	
+	if($password == $row["password"];){
+		return true;
 	}
+			
 	return false;
 }
 

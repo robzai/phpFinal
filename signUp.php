@@ -6,7 +6,6 @@ require_once('startSession.php');
 
 $userName = "0";
 $password = "0";
-$usersTable = "users";
 
 if(isset($_POST["u"]) && !empty($_POST["u"])){
 	$userName = $_POST["u"];
@@ -53,10 +52,8 @@ function checkUserNameExist ($userName){
 				 ";
 	$resultSet = mysqli_query($db, $selectQuery) or die(mysqli_error($db));
 	while($row = mysqli_fetch_assoc($resultSet)){
-		foreach($row as $key=>$col){
-			if($userName == $col){
-				return true;
-			}
+		if($userName == $row["userName"]){
+			return true;
 		}
 	}
 	return false;
