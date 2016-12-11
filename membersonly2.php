@@ -13,20 +13,39 @@ if ( isset( $_POST['submit'] ) ){
 	$userId = $_SESSION['userId'];	
 	$date = date("Y-m-d H:i:s");
 	
-	//upload comment to database
-	$commentId = writeCommentToDB($userId, $comment, $date);
-	//if there is a file to upload
-	if(!empty($_FILES["fileToUpload"]["name"])){
+	//if no file was selected upload comment only
+	if(empty($_FILES["fileToUpload"]["name"])){
+		//upload comment to database
+		$commentId = writeCommentToDB($userId, $comment, $date);
+	}else{	//there is a file to upload
 		$target_dir = "uploads/";
 		//$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 		//$fileType = pathinfo($target_file,PATHINFO_EXTENSION);
 		$fullPath = $target_dir.$_SESSION['userName']."_".$_FILES["fileToUpload"]["name"];
-		//if uploadFile is successful up date the database
-		if(uploadFile($fullPath)){
-			writePathToDB($userId, $fullPath, $commentId);
+		
+		if(checkDuplicatePaht($fullPath)){
+			echo "you already uploaded a file with the same name";
+		}else{	//no duplicate than file can be upload and update DB
+			//if uploadFile is successful up date the database
+			if(uploadFile($fullPath)){
+				//upload comment to database
+				$commentId = writeCommentToDB($userId, $comment, $date);
+				writePathToDB($userId, $fullPath, $commentId);
+			}	
 		}
+		
 	}
 
+}
+
+function checkDuplicatePaht($fullPath){
+	global $db;
+	global $filesTable;
+	$selectQuery=" SELECT count(path) FROM $filesTable where path = '" . $fullPath ."'";
+	$resultSet = mysqli_query($db, $selectQuery) or die(mysqli_error($db));
+	$row = mysqli_fetch_assoc($resultSet);
+	return $row["count(path)"] != 0;
+	
 }
 
 function writeCommentToDB($userId, $comment, $date){

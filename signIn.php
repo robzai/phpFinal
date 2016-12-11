@@ -26,13 +26,11 @@ function checkUser($userName, $password){
 	
 	global $usersTable;
 	global $db;
-	$selectQuery="
-					select password from $usersTable where userName = $userName
-				 ";
+	$selectQuery="select password from $usersTable where userName = '" . $userName . "'";
 	$resultSet = mysqli_query($db, $selectQuery) or die(mysqli_error($db));
 	$row = mysqli_fetch_assoc($resultSet);
 	
-	if($password == $row["password"];){
+	if($password == $row["password"]){
 		return true;
 	}
 			

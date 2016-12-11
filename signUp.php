@@ -32,7 +32,7 @@ function sendEmail($userName, $password){
 		foreach ($emails as $email) {		
 			echo $email . "<br>";
 			 
-			$title = "from php final";
+			$title = "your team registered an account on php final";
 			$body =  "your team's username: $userName password: $password";
 			startphpmailer ($email, $body, $title);		 				 
 
